@@ -1,0 +1,8 @@
+(Setup)
+npm install express cors mongoose jsonwebtoken bcryptjs
+npm install -D nodemon
+npm install --save-dev prisma dotenv
+npm install @prisma/client
+npx prisma init
+npx prisma generate
+npx prisma migrate dev --name init
