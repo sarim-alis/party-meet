@@ -20,7 +20,7 @@ export const registerUser = async (userData) => {
   // Generate JWT token.
   const token = jwt.sign({ userId: user._id.toString(), email: user.email }, JWT_SECRET, { expiresIn: "1d" });
 
-  return { token, user: { id: user._id, username: user.username, email: user.email, imageUrl: user.imageUrl, createdAt: user.createdAt }};
+  return { token, user: { id: user._id, username: user.username, email: user.email, imageUrl: user.imageUrl, createdAt: user.createdAt, isAdmin: user.email === "admin@gmail.com" }};
 };
 
 // Login user
@@ -37,7 +37,7 @@ export const loginUser = async (email, password) => {
   // Generate JWT token.
   const token = jwt.sign({ userId: user._id.toString(), email: user.email }, JWT_SECRET, { expiresIn: "7d" });
 
-  return { token, user: { id: user._id, username: user.username, email: user.email, imageUrl: user.imageUrl }};
+  return { token, user: { id: user._id, username: user.username, email: user.email, imageUrl: user.imageUrl, isAdmin: user.email === "admin@gmail.com" }};
 };
 
 // Get user by ID.
@@ -46,7 +46,7 @@ export const getUserById = async (userId) => {
 
   if (!user) { throw new Error("User not found");}
 
-  return { id: user._id, username: user.username, email: user.email, imageUrl: user.imageUrl, createdAt: user.createdAt };
+  return { id: user._id, username: user.username, email: user.email, imageUrl: user.imageUrl, createdAt: user.createdAt, isAdmin: user.email === "admin@gmail.com" };
 };
 
 // Update user profile.
