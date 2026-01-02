@@ -1,10 +1,11 @@
 // Imports.
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import Toast from "react-native-toast-message";
 import { login } from "../services/auth";
 import { loginStyles } from "../styles/login";
 
@@ -20,16 +21,17 @@ export default function LoginScreen() {
   // Handle login.
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert("Error", "Please fill in all fields");
+      Toast.show({ type: "error", text1: "Error", text2: "Please fill in all fields" });
       return;
     }
 
     setLoading(true);
     try {
       await login(email, password);
+      Toast.show({ type: "success", text1: "Success", text2: "Login successful!" });
       router.replace("/(tabs)/events"); 
     } catch (error) {
-      Alert.alert("Login Failed", error.toString());
+      Toast.show({ type: "error", text1: "Login Failed", text2: error.toString() });
     } finally {
       setLoading(false);
     }

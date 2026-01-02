@@ -1,10 +1,11 @@
 // Imports.
 import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import Toast from "react-native-toast-message";
 import { register } from "../services/auth";
 import { registerStyles } from "../styles/register";
 
@@ -21,16 +22,17 @@ export default function RegisterScreen() {
   // Handle register.
   const handleRegister = async () => {
     if (!username || !email || !password) {
-      Alert.alert("Error", "Please fill in all fields");
+      Toast.show({ type: "error", text1: "Error", text2: "Please fill in all fields" });
       return;
     }
 
     setLoading(true);
     try {
       await register(username, email, password);
+      Toast.show({ type: "success", text1: "Success", text2: "Account created successfully!" });
       router.replace("/(tabs)/events");
     } catch (error) {
-      Alert.alert("Registration Failed", error.toString());
+      Toast.show({ type: "error", text1: "Registration Failed", text2: error.toString() });
     } finally {
       setLoading(false);
     }
